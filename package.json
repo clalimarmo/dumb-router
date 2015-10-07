@@ -1,6 +1,6 @@
 {
   "name": "dumb-router",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "path -> handler mapping and execution–that's it",
   "main": "src/dumb-router.js",
   "files": [
