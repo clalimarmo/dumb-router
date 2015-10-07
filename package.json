@@ -1,11 +1,14 @@
 {
   "name": "dumb-router",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "path -> handler mapping and execution–that's it",
-  "main": "build/dumb-router.js",
+  "main": "src/dumb-router.js",
+  "files": [
+    "build/",
+    "src/"
+  ],
   "scripts": {
-    "test": "gulp spec",
-    "posttest": "gulp build"
+    "test": "gulp"
   },
   "repository": {
     "type": "git",
@@ -35,7 +38,6 @@
     "karma-phantomjs-launcher": "^0.2.1",
     "mocha": "^2.3.3",
     "phantomjs": "^1.9.18",
-    "require-dir": "^0.3.0",
-    "vinyl-source-stream": "^1.1.0"
+    "require-dir": "^0.3.0"
   }
 }
