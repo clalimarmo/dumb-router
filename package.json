@@ -1,6 +1,6 @@
 {
   "name": "dumb-router",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "path -> handler mapping and execution–that's it",
   "main": "build/dumb-router.js",
   "files": [
@@ -24,6 +24,11 @@
   "bugs": {
     "url": "https://github.com/clalimarmo/dumb-router/issues"
   },
+  "files": [
+    "README.md",
+    "src",
+    "build"
+  ],
   "homepage": "https://github.com/clalimarmo/dumb-router",
   "devDependencies": {
     "babelify": "^6.3.0",
