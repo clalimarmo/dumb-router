@@ -2,6 +2,78 @@
 
 Path -> Handler mapping and execution–that's it
 
+## Usage
+
+### Basic usage
+
+```javascript
+var Router = require('dumb-router');
+
+var router = Router(); //factory; do not use `new`
+
+router.register('/cats', meow);
+router.register('/dogs', woof);
+
+function meow() {
+  console.log('meow!');
+}
+
+function woof() {
+  console.log('woof!');
+}
+
+router.execute('/dogs'); // => woof
+```
+
+### Route parameters
+
+```javascript
+router.register('/say/:words', say);
+
+function say(path, params) {
+  console.log(params.words);
+}
+
+router.execute('/say/hello-world');
+```
+
+### Nesting routes
+
+```javascript
+router.register('/users/:userId', setUser, function(router) {
+  router.register('/edit', showUserForm);
+});
+
+router.execute('/users/5/edit');
+```
+
+### Scoping routes
+
+```javascript
+router.register('/food', null, function(router) {
+  router.register('/cookies', cookies);
+  router.register('/cakes', cakes);
+});
+```
+
+### Path building
+
+I lied about `dumb-router` only doing path -> handler mapping and execution.
+Being able to validate routes is useful, and we can do it by exposing a bit of
+the route matching logic.
+
+```javascript
+router.register('/food' null, function(router) {
+  router.register('/gourmet', gourmetFood);
+  router.register('/fast', fastFood);
+});
+
+router.path('food') //throws error, no handler for "/food"
+router.path('food', 'gourmet');       // => '/food/gourmet'
+router.path('food', 'fast');          // => '/food/fast'
+router.path('food', 'home-cooking');  //throws error, no route defined
+```
+
 ## About
 
 Some context around the origin of this class:
