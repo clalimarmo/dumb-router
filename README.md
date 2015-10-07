@@ -26,27 +26,3 @@ routers, and one store responds to "/users/" and another store responds
 to "/users/new", and both Stores need to invoke their handlers when
 navigating to "/users/new", the router has to consider "/users/new" a
 match for "/users".
-
-# Please enter the commit message for your changes. Lines starting
-# with '#' will be ignored, and an empty message aborts the commit.
-# On branch master
-#
-# Initial commit
-#
-# Changes to be committed:
-#	new file:   .gitignore
-#	new file:   build/dumb-router.js
-#	new file:   gulpfile.js/index.js
-#	new file:   gulpfile.js/tasks/build.js
-#	new file:   gulpfile.js/tasks/default.js
-#	new file:   gulpfile.js/tasks/spec.js
-#	new file:   karma.conf.js
-#	new file:   package.json
-#	new file:   src/descriptor_part.js
-#	new file:   src/descriptor_part_spec.js
-#	new file:   src/index.js
-#	new file:   src/path_matcher.js
-#	new file:   src/path_matcher_spec.js
-#	new file:   src/route_spec.js
-#	new file:   src/router_spec.js
-#
