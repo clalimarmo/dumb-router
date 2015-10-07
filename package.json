@@ -2,7 +2,7 @@
   "name": "dumb-router",
   "version": "1.0.0",
   "description": "path -> handler mapping and execution–that's it",
-  "main": "src/dumb-router.js",
+  "main": "build/dumb-router.js",
   "scripts": {
     "test": "gulp spec",
     "posttest": "gulp build"
