@@ -1,6 +1,6 @@
 require('babelify/polyfill');
 
-const Route = require('./').Route;
+const Route = require('./dumb-router').Route;
 
 describe('router route:', () => {
   const descriptor = '/users/:userId';

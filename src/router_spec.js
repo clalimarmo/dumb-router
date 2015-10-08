@@ -1,6 +1,6 @@
 require('babelify/polyfill');
 
-const Router = require('./');
+const Router = require('./dumb-router');
 
 describe('Router', () => {
   var router;

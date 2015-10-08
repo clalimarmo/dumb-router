@@ -7,8 +7,10 @@
     "src/"
   ],
   "scripts": {
-    "test": "gulp spec",
-    "posttest": "gulp build"
+    "prepublish": "npm test",
+    "posttest": "npm compile",
+    "compile": "gulp build",
+    "test": "gulp spec"
   },
   "repository": {
     "type": "git",
@@ -34,6 +36,7 @@
     "babelify": "^6.3.0",
     "browserify": "^11.2.0",
     "gulp": "^3.9.0",
+    "gulp-babel": "^5.2.1",
     "gulp-util": "^3.0.6",
     "karma": "^0.13.10",
     "karma-babel-preprocessor": "^5.2.2",
@@ -44,12 +47,10 @@
     "mocha": "^2.3.3",
     "phantomjs": "^1.9.18",
     "require-dir": "^0.3.0",
-    "uglify": "^0.1.5",
-    "uglifyify": "^3.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   },
   "dependencies": {
-    "gulp-uglify": "^1.4.1"
+    "core-js": "^1.2.1"
   }
 }

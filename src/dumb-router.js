@@ -1,3 +1,5 @@
+require('core-js');
+
 const PathMatcher = require('./path_matcher');
 
 const Router = function() {

@@ -1,1 +1,80 @@
-!function(e){if("object"==typeof exports&&"undefined"!=typeof module)module.exports=e();else if("function"==typeof define&&define.amd)define([],e);else{var t;t="undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this,t.dumbRouter=e()}}(function(){return function e(t,r,n){function u(o,a){if(!r[o]){if(!t[o]){var f="function"==typeof require&&require;if(!a&&f)return f(o,!0);if(i)return i(o,!0);var c=new Error("Cannot find module '"+o+"'");throw c.code="MODULE_NOT_FOUND",c}var s=r[o]={exports:{}};t[o][0].call(s.exports,function(e){var r=t[o][1][e];return u(r?r:e)},s,s.exports,e,t,r,n)}return r[o].exports}for(var i="function"==typeof require&&require,o=0;o<n.length;o++)u(n[o]);return u}({1:[function(e,t,r){"use strict";var n=function(e,t){var r={};return r.matches=function(t){if(r.isDynamic()){var n=r.getPathValue(t);return void 0!==n&&n.length>0}return r.getPathValue(t)===e},r.isDynamic=function(){return e.startsWith(":")},r.paramName=function(){return r.isDynamic()?e.split(":")[1]:void 0},r.getPathValue=function(e){return e.split("/")[t]},r};t.exports=n},{}],2:[function(e,t,r){"use strict";var n=e("./path_matcher"),u=function i(){function e(e){return r.find(function(t){return t.matches(e)})}var t={},r=[];return t.register=function(e,t,n){r.push(i.Route(e,t,n))},t.execute=function(t){var r=e(t);r&&r.execute(t)},t.path=function(){for(var t=arguments.length,r=Array(t),n=0;t>n;n++)r[n]=arguments[n];r.unshift("");var u=r.join("/");if(void 0===e(u))throw new Error('No route for "'+u+'"');return u},t};u.Route=function(e,t,r){function i(){return null===t||void 0===t}var o,a={},f=n(e);return r&&(o=u(),r(o)),a.matches=function(e){return i()?f.matches(e)&&f.remainder(e).length>0:f.matches(e)},a.execute=function(e){a.matches(e)&&(i()||t(e,f.params(e)),o&&o.execute(f.remainder(e)))},a},t.exports=u},{"./path_matcher":3}],3:[function(e,t,r){"use strict";var n=e("./descriptor_part"),u=function(e){var t={},r=e.split("/").map(n);return t.matches=function(e){return r.every(function(t){return t.matches(e)})},t.params=function(e){var t={};return r.forEach(function(r,n){r.isDynamic()&&(t[r.paramName()]=r.getPathValue(e))}),t},t.remainder=function(e){var t=e.split("/");return t.splice(0,r.length),t.unshift(""),t.join("/")},t};t.exports=u},{"./descriptor_part":1}]},{},[2])(2)});
+'use strict';
+
+require('core-js');
+
+var PathMatcher = require('./path_matcher');
+
+var Router = function Router() {
+  var router = {};
+  var routes = [];
+
+  router.register = function (pathDescriptor, handler, subroutes) {
+    routes.push(Router.Route(pathDescriptor, handler, subroutes));
+  };
+
+  router.execute = function (path) {
+    var matchingRoute = routeFor(path);
+    if (matchingRoute) {
+      matchingRoute.execute(path);
+    }
+  };
+
+  router.path = function () {
+    for (var _len = arguments.length, pathParts = Array(_len), _key = 0; _key < _len; _key++) {
+      pathParts[_key] = arguments[_key];
+    }
+
+    pathParts.unshift('');
+    var path = pathParts.join('/');
+    if (routeFor(path) === undefined) {
+      throw new Error('No route for "' + path + '"');
+    }
+    return path;
+  };
+
+  return router;
+
+  function routeFor(path) {
+    return routes.find(function (route) {
+      return route.matches(path);
+    });
+  }
+};
+
+Router.Route = function (pathDescriptor, handler, setupSubroutes) {
+  var self = {};
+  var pathMatcher = PathMatcher(pathDescriptor);
+
+  var subRouter;
+  if (setupSubroutes) {
+    subRouter = Router();
+    setupSubroutes(subRouter);
+  }
+
+  self.matches = function (path) {
+    if (isScopingRoute()) {
+      return pathMatcher.matches(path) && pathMatcher.remainder(path).length > 0;
+    } else {
+      return pathMatcher.matches(path);
+    }
+  };
+
+  self.execute = function (path) {
+    if (self.matches(path)) {
+      if (!isScopingRoute()) {
+        handler(path, pathMatcher.params(path));
+      }
+      if (subRouter) {
+        subRouter.execute(pathMatcher.remainder(path));
+      }
+    }
+  };
+
+  return self;
+
+  function isScopingRoute() {
+    return handler === null || handler === undefined;
+  }
+};
+
+module.exports = Router;
