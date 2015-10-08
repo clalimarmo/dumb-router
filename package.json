@@ -1,14 +1,15 @@
 {
   "name": "dumb-router",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "path -> handler mapping and execution–that's it",
   "main": "build/dumb-router.js",
   "files": [
-    "src/"
+    "src/",
+    "build/"
   ],
   "scripts": {
-    "prepublish": "npm test",
-    "posttest": "npm compile",
+    "prepublish": "npm run test",
+    "posttest": "npm run compile",
     "compile": "gulp build",
     "test": "gulp spec"
   },
