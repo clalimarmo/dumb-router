@@ -13,14 +13,13 @@ describe('Router', () => {
   it('only executes a matching path', () => {
     var executedPath = 'executed path';
     function setExecutedPath(path) {
-      executedPath = path;
+      return 'executed: ' + path;
     }
 
     router.register('/tomes', setExecutedPath);
     router.register('/grimoires', setExecutedPath);
 
-    router.execute('/tomes');
-    expect(executedPath).to.eq('/tomes');
+    expect(router.execute('/tomes')[0]).to.eq('executed: /tomes');
   });
 
   it('executes a path handler with dynamic portions as params', () => {
@@ -54,11 +53,13 @@ describe('Router', () => {
       function outerRouteHandler(path, params) {
         outerRouteMatched = true;
         outerRouteParams = params;
+        return 'outer';
       }
 
       function innerRouteHandler(path, params) {
         innerRouteMatched = true;
         innerRouteParams = params;
+        return 'inner';
       }
 
       router.register('/grimoires/:id', outerRouteHandler, (router) => {
@@ -67,7 +68,10 @@ describe('Router', () => {
     });
 
     it('matches outer and inner routes', () => {
-      router.execute('/grimoires/5/comments/arcane');
+      const returnValues = router.execute('/grimoires/5/comments/arcane');
+
+      expect(returnValues[0]).to.eq('outer');
+      expect(returnValues[1]).to.eq('inner');
 
       expect(outerRouteMatched).to.be.true;
       expect(innerRouteMatched).to.be.true;
@@ -102,6 +106,7 @@ describe('Router', () => {
 
     beforeEach(() => {
       mockHandler = () => {};
+      router.register('/', mockHandler);
       router.register('/legends/:legendId', mockHandler, (router) => {
         router.register('/comments', mockHandler);
         router.register('/comments/new', mockHandler);
@@ -118,6 +123,14 @@ describe('Router', () => {
       expect(() => {
         router.path('legends');
       }).to.throw(Error, 'No route for "/legends"');
+    });
+
+    it('raises errors for paths that do not exist', () => {
+      router = Router();
+      router.register('/', mockHandler);
+      expect(() => {
+        router.path('battlescar');
+      }).to.throw(Error, 'No route for "/battlescar"');
     });
 
     it('considers no-op (scope) routes to not exist', () => {

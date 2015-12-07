@@ -13,7 +13,7 @@ const Router = function() {
   router.execute = function(path) {
     const matchingRoute = routeFor(path);
     if (matchingRoute) {
-      matchingRoute.execute(path);
+      return matchingRoute.execute(path);
     }
   };
 
@@ -52,13 +52,16 @@ Router.Route = function(pathDescriptor, handler, setupSubroutes) {
   };
 
   self.execute = function(path) {
+    let returnVals = [];
     if (self.matches(path)) {
       if (!isScopingRoute()) {
-        handler(path, pathMatcher.params(path));
+        returnVals.push(handler(path, pathMatcher.params(path)));
       }
       if (subRouter) {
-        subRouter.execute(pathMatcher.remainder(path));
+        const subRouteReturnVals = subRouter.execute(pathMatcher.remainder(path));
+        returnVals = returnVals.concat(subRouteReturnVals);
       }
+      return returnVals;
     }
   };
 
