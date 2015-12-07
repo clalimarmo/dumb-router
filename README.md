@@ -15,14 +15,16 @@ router.register('/cats', meow);
 router.register('/dogs', woof);
 
 function meow() {
-  console.log('meow!');
+  alert('a cat is speaking');
+  return 'meow';
 }
 
 function woof() {
-  console.log('woof!');
+  alert('a dog is speaking');
+  return 'woof';
 }
 
-router.execute('/dogs'); // => woof
+alert(router.execute('/dogs')[0]); // => woof
 ```
 
 ### Route parameters
@@ -55,6 +57,15 @@ router.register('/food', null, function(router) {
   router.register('/cakes', cakes);
 });
 ```
+
+### Return values
+
+When the router executes, it returns an array, with an entry for each
+route handler.
+
+- Return values for outer handlers come before those of nested routes.
+- Scoping routes do not add to the array of return values.
+- `undefined` is added for handlers that do not return anything.
 
 ### Path building
 
